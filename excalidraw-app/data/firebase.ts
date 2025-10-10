@@ -57,7 +57,11 @@ let firebaseApp: ReturnType<typeof initializeApp> | null = null;
 let firestore: ReturnType<typeof getFirestore> | null = null;
 let firebaseStorage: ReturnType<typeof getStorage> | null = null;
 
-const FIREBASE_REQUIRED_KEYS = ["apiKey", "projectId", "storageBucket"] as const;
+const FIREBASE_REQUIRED_KEYS = [
+  "apiKey",
+  "projectId",
+  "storageBucket",
+] as const;
 const isFirebaseConfigured = FIREBASE_REQUIRED_KEYS.every((key) => {
   const value = FIREBASE_CONFIG?.[key];
   return typeof value === "string" && value.length > 0;
@@ -390,7 +394,10 @@ export const saveToFirebase = async (
     const existingDocument = await fetchLocalSceneDocument(roomId);
     if (existingDocument) {
       const remoteElements = getSyncableElements(
-        restoreElements(await decryptLocalScene(existingDocument, roomKey), null),
+        restoreElements(
+          await decryptLocalScene(existingDocument, roomKey),
+          null,
+        ),
       );
       reconciledElements = getSyncableElements(
         reconcileElements(

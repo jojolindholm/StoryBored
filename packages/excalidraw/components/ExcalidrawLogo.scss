@@ -1,86 +1,87 @@
 .excalidraw {
   .ExcalidrawLogo {
-    --logo-icon--mobile: 1rem;
-    --logo-text--mobile: 0.75rem;
+    --logo-mark--mobile: 1.75rem;
+    --logo-combined--mobile: 3.25rem;
 
-    --logo-icon--xs: 2rem;
-    --logo-text--xs: 1.5rem;
+    --logo-mark--xs: 2.25rem;
+    --logo-combined--xs: 4rem;
 
-    --logo-icon--small: 2.5rem;
-    --logo-text--small: 1.75rem;
+    --logo-mark--small: 2.75rem;
+    --logo-combined--small: 4.75rem;
 
-    --logo-icon--normal: 3rem;
-    --logo-text--normal: 2.2rem;
+    --logo-mark--normal: 3.25rem;
+    --logo-combined--normal: 5.5rem;
 
-    --logo-icon--large: 90px;
-    --logo-text--large: 65px;
+    --logo-mark--large: 4.25rem;
+    --logo-combined--large: 7.5rem;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 
-    svg {
-      flex: 0 0 auto;
+    img {
+      display: block;
+      user-select: none;
     }
 
-    .ExcalidrawLogo-icon {
+    .ExcalidrawLogo-mark {
+      height: var(--logo-mark--small);
       width: auto;
-      color: var(--color-logo-icon);
     }
 
-    .ExcalidrawLogo-text {
-      margin-left: 0.75rem;
+    .ExcalidrawLogo-combined {
+      height: var(--logo-combined--small);
       width: auto;
-      color: var(--color-logo-text);
     }
 
     &.is-mobile {
-      .ExcalidrawLogo-icon {
-        height: var(--logo-icon--mobile);
+      .ExcalidrawLogo-mark {
+        height: var(--logo-mark--mobile);
       }
 
-      .ExcalidrawLogo-text {
-        height: var(--logo-text--mobile);
-        margin-left: 0.5rem;
+      .ExcalidrawLogo-combined {
+        height: var(--logo-combined--mobile);
       }
     }
 
     &.is-xs {
-      .ExcalidrawLogo-icon {
-        height: var(--logo-icon--xs);
+      .ExcalidrawLogo-mark {
+        height: var(--logo-mark--xs);
       }
 
-      .ExcalidrawLogo-text {
-        height: var(--logo-text--xs);
+      .ExcalidrawLogo-combined {
+        height: var(--logo-combined--xs);
       }
     }
 
     &.is-small {
-      .ExcalidrawLogo-icon {
-        height: var(--logo-icon--small);
+      .ExcalidrawLogo-mark {
+        height: var(--logo-mark--small);
       }
 
-      .ExcalidrawLogo-text {
-        height: var(--logo-text--small);
+      .ExcalidrawLogo-combined {
+        height: var(--logo-combined--small);
       }
     }
 
     &.is-normal {
-      .ExcalidrawLogo-icon {
-        height: var(--logo-icon--normal);
+      .ExcalidrawLogo-mark {
+        height: var(--logo-mark--normal);
       }
 
-      .ExcalidrawLogo-text {
-        height: var(--logo-text--normal);
+      .ExcalidrawLogo-combined {
+        height: var(--logo-combined--normal);
       }
     }
 
     &.is-large {
-      .ExcalidrawLogo-icon {
-        height: var(--logo-icon--large);
+      .ExcalidrawLogo-mark {
+        height: var(--logo-mark--large);
       }
 
-      .ExcalidrawLogo-text {
-        height: var(--logo-text--large);
+      .ExcalidrawLogo-combined {
+        height: var(--logo-combined--large);
       }
     }
   }
