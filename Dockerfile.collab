@@ -1,0 +1,24 @@
+# Dockerfile for Collaboration Server
+
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json yarn.lock ./
+
+# Install dependencies
+RUN yarn install --ignore-engines
+
+# Copy collaboration server code
+COPY collab-server/ ./collab-server/
+
+# Create data directory
+RUN mkdir -p /app/collab-data
+
+# Expose port
+EXPOSE 3002
+
+# Start collaboration server
+CMD ["node", "collab-server/server.js"]
+

@@ -1,23 +1,45 @@
+version: '3.8'
+
 services:
-  excalidraw:
+  # Main Excalidraw App (StoryBored)
+  storybored-app:
     build:
       context: .
-      args:
-        - NODE_ENV=development
-    container_name: excalidraw
+      dockerfile: Dockerfile.app
+    container_name: storybored-app
     ports:
-      - "3000:80"
-    restart: on-failure
-    stdin_open: true
-    healthcheck:
-      disable: true
+      - "3200:3200"
+    restart: unless-stopped
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
+    networks:
+      - storybored-network
+
+  # Collaboration Server
+  storybored-collab:
+    build:
+      context: .
+      dockerfile: Dockerfile.collab
+    container_name: storybored-collab
+    ports:
+      - "3002:3002"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - CORS_ORIGIN=https://storybored.johanlindholm.com,https://johanlindholm.com
+      - COLLAB_DATA_DIR=/app/collab-data
+      - MAX_JSON_PAYLOAD=25mb
     volumes:
-      - ./:/opt/node_app/app:delegated
-      - ./package.json:/opt/node_app/package.json
-      - ./yarn.lock:/opt/node_app/yarn.lock
-      - notused:/opt/node_app/app/node_modules
+      # Persist collaboration data
+      - collab-data:/app/collab-data
+    networks:
+      - storybored-network
+
+networks:
+  storybored-network:
+    driver: bridge
 
 volumes:
-  notused:
+  collab-data:
+    driver: local

@@ -21,6 +21,10 @@ const MAX_JSON_PAYLOAD = process.env.MAX_JSON_PAYLOAD || "25mb";
 
 const fsp = fs.promises;
 
+const allowedOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(",").map(o => o.trim())
+  : ["*"];
+
 const ensureDirectory = async (dirPath) => {
   await fsp.mkdir(dirPath, { recursive: true });
 };
@@ -60,14 +64,22 @@ const getFilePath = (prefix, fileId) => {
   return path.join(FILES_DIR, ...segments, fileId);
 };
 
-const setCorsHeaders = (res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "*");
+const setCorsHeaders = (res, req) => {
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes("*")) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  } else if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
+  
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 };
 
 app.use((req, res, next) => {
-  setCorsHeaders(res);
+  setCorsHeaders(res, req);
   if (req.method === "OPTIONS") {
     res.status(204).end();
     return;
@@ -203,7 +215,13 @@ const server = http.createServer(app);
 const io = new SocketIO(server, {
   transports: ["websocket", "polling"],
   cors: {
-    origin: process.env.CORS_ORIGIN || "*",
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes("*") || !origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   },
