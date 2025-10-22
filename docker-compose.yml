@@ -29,12 +29,18 @@ services:
       - PORT=3002
       - CORS_ORIGIN=https://storybored.johanlindholm.com,https://johanlindholm.com
       - COLLAB_DATA_DIR=/app/collab-data
-      - MAX_JSON_PAYLOAD=25mb
+      - MAX_JSON_PAYLOAD=100mb
     volumes:
       # Persist collaboration data
       - collab-data:/app/collab-data
     networks:
       - storybored-network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
 
 networks:
   storybored-network:
